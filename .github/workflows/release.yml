@@ -1,0 +1,24 @@
+name: Test release
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  release:
+    name: Upload assets to release
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set appVersion
+        uses: bhowell2/github-substring-action@v1
+        id: appVersion
+        with:
+          value: ${{github.ref}}
+          index_of_str: "refs/tags/v"
+
+      - run: echo "Version = ${{steps.appVersion.outputs.substring}}"
+
